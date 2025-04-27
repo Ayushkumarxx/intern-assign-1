@@ -1,4 +1,3 @@
-import Onboard from "../pages/Onboard";
 
 const Routes = {
     Home: "/home",
@@ -6,4 +5,4 @@ const Routes = {
 
   };
   
-  export default Routes;
+export default Routes;

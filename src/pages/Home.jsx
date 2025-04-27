@@ -1,28 +1,65 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FaClock,
-  FaUsers,
-  FaList,
-  FaArrowRight,
-  FaArrowLeft,
-  FaRegHeart,
-} from "react-icons/fa";
+import { FaClock, FaUsers, FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { GrBook } from "react-icons/gr";
-import { FiHome, FiUser } from "react-icons/fi";
-import {
-  IoSearch,
-  IoStar,
-} from "react-icons/io5";
+
+import { IoStar } from "react-icons/io5";
 import { HiOutlineCheckCircle } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
 import Exports from "../utils/export";
+import { useLocation } from "react-router-dom";
+import { generateTripPlan } from "../utils/fetchData";
 
-import { IoIosAdd } from "react-icons/io";
+/**
+ * Loader component
+ *
+ * This component displays a loading spinner with rotating text phrases while data is being fetched.
+ * It uses an interval to change the displayed phrase every 2 seconds.
+ *
+ * Props:
+ * - loading (boolean): Determines whether the loader should be displayed or not.
+ */
+const Loader = ({ loading }) => {
+  // State to keep track of the current phrase index
+  const [textIndex, setTextIndex] = useState(0);
 
+  // Array of phrases to display
+  const phrases = [
+    "Generating content...",
+    "This may take less than 10 seconds...",
+    "Hold tight, we're almost there!",
+    "Fetching the best results for you!",
+  ];
 
+  useEffect(() => {
+    // Set up an interval to update the text index every 2 seconds
+    const interval = setInterval(() => {
+      setTextIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+    }, 2000);
 
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, []);
+
+  // If loading is false, render nothing
+  if (!loading) return null;
+
+  // Render the loading spinner and the current phrase
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-[#FDFBF7] dark:bg-[#0B0809]">
+      <div className="flex flex-col gap-4 items-center justify-center text-center">
+        <div className="animate-spin rounded-full h-[50px] [50px] border-4 border-t-4 border-blue-500"></div>
+        <span className="text-lg text-gray-700 dark:text-white">
+          {phrases[textIndex]}
+        </span>
+      </div>
+    </div>
+  );
+};
+/**
+ * InfoItem component
+ **/
 const InfoItem = ({
-  icon: Icon, // Icon component passed as prop
+  icon: Icon,
   iconBgColor = "dark:bg-[#292929]",
   iconColor = "text-[#D1F462]",
   title,
@@ -30,6 +67,9 @@ const InfoItem = ({
   titleColor = "text-white",
   subtitleColor = "text-white",
 }) => {
+  // Render the icon component
+  // Use the iconBgColor and iconColor props to style the icon
+  // Return the icon component
   return (
     <div className="flex items-center gap-1">
       <div
@@ -38,6 +78,8 @@ const InfoItem = ({
         {Icon && <Icon className={`text-[16px] ${iconColor}`} />}
       </div>
       <div className="flex flex-col">
+        {/* Render the title and subtitle components */}
+        {/* Use the titleColor and subtitleColor props to style the text */}
         <p className={`text-[12px] font-[600] ${titleColor}`}>{title}</p>
         <p className={`text-[10px] font-[400] ${subtitleColor}`}>{subtitle}</p>
       </div>
@@ -45,6 +87,13 @@ const InfoItem = ({
   );
 };
 
+/**
+ * AccommodationCard component
+ *
+ * This component renders a card with an image of the hotel, the hotel name, check in and check out dates,
+ * the number of nights and the status of the booking.
+ *
+ */
 const AccommodationCard = ({
   imageUrl,
   ratingLabel,
@@ -95,9 +144,16 @@ const AccommodationCard = ({
   );
 };
 
+/**
+ * DaysUi component
+ *
+ * This component renders a single day in the itinerary with the day, date and month.
+ *
+ */
 const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
   return firstDay ? (
     <div className="flex border-[1px] dark:border-[#D3F462] border-[#313DDF] rounded-[8px] overflow-hidden shrink-0">
+      {/* Render the month in a separate column if it is the first day */}
       <div className="w-[28px] h-[45px] dark:bg-[#D3F462] bg-[#313DDF] flex items-center justify-center">
         <span className="text-white dark:text-[#333333] transform -rotate-90 text-[12px] font-[600]">
           {month}
@@ -115,6 +171,18 @@ const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
     </div>
   );
 };
+/**
+ * ActivityCard component
+ *
+ * This component renders a single activity card with the following properties:
+ *
+ * - image: The image of the activity
+ * - title: The title of the activity
+ * - timing: The timing of the activity
+ * - duration: The duration of the activity
+ * - pickUp: The pick up location of the activity
+ *
+ */
 const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
   return (
     <div className="w-full h-[140px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
@@ -142,9 +210,41 @@ const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
   );
 };
 
-
-
+/** Main Home component **/
 const Home = () => {
+  const location = useLocation();
+  const formData = location.state;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [tripData, setTripData] = useState(null);
+
+  // Define your callback functions
+  const onSuccess = (data) => {
+    setTripData(data);
+    console.log("Trip Data:", data);
+    setLoading(false);
+  };
+
+  const onError = (error) => {
+    setError(error);
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setLoading(true);
+        await generateTripPlan(formData, onSuccess, onError);
+      } catch (error) {
+        console.error("Unexpected error: ", error);
+        setLoading(false);
+      }
+    };
+
+    getData();
+  }, [formData]);
+
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false); // Track if we've scrolled at all
   const containerRef = useRef(null);
@@ -189,7 +289,9 @@ const Home = () => {
     };
   }, []);
 
-  return (
+  return loading ? (
+    <Loader loading={loading} />
+  ) : (
     <section className="bg-[#FDFBF7] dark:bg-[#0B0809] min-h-screen w-full">
       <div className="flex flex-col max-w-md mx-auto min-h-screen px-4 pt-8 pb-20 relative">
         {/* Header Section */}
@@ -221,10 +323,11 @@ const Home = () => {
             <div className="flex justify-between z-50">
               <div>
                 <h1 className="text-[40px] font-[900] text-white mb-2 leading-none">
-                  TOKYO
+                  {tripData?.tripInfo.city}
                 </h1>
                 <p className="text-[12px] font-[500] text-white">
-                  27.01.2025 - 02.02.2025
+                  {tripData?.tripInfo.tripDates.start} -{" "}
+                  {tripData?.tripInfo.tripDates.end}
                 </p>
               </div>
               <div>
@@ -235,17 +338,17 @@ const Home = () => {
             <div className="flex justify-between z-50">
               <InfoItem
                 icon={FaClock} // Pass icon as prop
-                title="8 Days" // Pass title
+                title={tripData?.tripInfo.duration} // Pass title
                 subtitle="Duration" // Pass subtitle
               />
               <InfoItem
                 icon={FaUsers} // Pass icon as prop
-                title="4 (2M,2F)" // Pass title
+                title={tripData?.tripInfo.size} // Pass title
                 subtitle="Group Size" // Pass subtitle
               />
               <InfoItem
                 icon={GrBook} // Pass icon as prop
-                title="14" // Pass title
+                title={tripData?.activities.totalCount} // Pass title
                 subtitle="Activities" // Pass subtitle
               />
             </div>
@@ -272,7 +375,8 @@ const Home = () => {
                   Flight Details
                 </h3>
                 <p className="text-[14px] font-[500] text-white">
-                  26.01.2025, 10:50 am
+                  {tripData?.tripInfo.flightInfo.departureDate},{" "}
+                  {tripData?.tripInfo.flightInfo.departureTime}
                 </p>
               </div>
               <div className="text-[#D1F462] underline underline-offset-2 text-[12px] leading-none p-0 m-0 ">
@@ -282,19 +386,24 @@ const Home = () => {
             <div className="flex gap-4 items-center">
               <div>
                 <h3 className="text-[16px] font-[700] text-white leading-none">
-                  DEL
+                  {tripData?.tripInfo.flightInfo.departureAirport}
                 </h3>
-                <p className="text-[12px] font-[500] text-white">Delhi,India</p>
+                <p className="text-[12px] font-[500] text-white">
+                  {" "}
+                  {tripData?.tripInfo.flightInfo.departureCity},{" "}
+                  {tripData?.tripInfo.flightInfo.departureCountry}
+                </p>
               </div>
               <div>
                 <FaArrowRight className=" text-[16px] text-white" />
               </div>
               <div>
                 <h3 className="text-[16px] font-[700] text-white leading-none">
-                  NRT
+                  {tripData?.tripInfo.flightInfo.arrivalAirport}
                 </h3>
                 <p className="text-[12px] font-[500] text-white">
-                  Narita,Japan
+                  {tripData?.tripInfo.flightInfo.arrivalCity},{" "}
+                  {tripData?.tripInfo.flightInfo.arrivalCountry}
                 </p>
               </div>
             </div>
@@ -322,33 +431,18 @@ const Home = () => {
               className="flex flex-nowrap gap-4 overflow-x-auto  scroll-smooth custom-scrollbar"
             >
               {/* Example accommodation cards */}
-              <AccommodationCard
-                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-                ratingLabel="Very good"
-                hotelName="Shinagawa Prince Hotel"
-                checkIn="26.01.2025, 11:15 pm"
-                checkOut="28.01.2025, 10:00 am"
-                nights={2}
-                statusText="Confirmed"
-              />
-              <AccommodationCard
-                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-                ratingLabel="Very good"
-                hotelName="Shinagawa Prince Hotel"
-                checkIn="26.01.2025, 11:15 pm"
-                checkOut="28.01.2025, 10:00 am"
-                nights={2}
-                statusText="Confirmed"
-              />
-              <AccommodationCard
-                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-                ratingLabel="Very good"
-                hotelName="Shinagawa Prince Hotel"
-                checkIn="26.01.2025, 11:15 pm"
-                checkOut="28.01.2025, 10:00 am"
-                nights={2}
-                statusText="Confirmed"
-              />
+              {tripData?.accommodations?.map((accommodation, index) => (
+                <AccommodationCard
+                  key={index} // Unique key for each card
+                  imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+                  ratingLabel={accommodation.ratingLabel}
+                  hotelName={accommodation.hotelName}
+                  checkIn={accommodation.checkIn}
+                  checkOut={accommodation.checkOut}
+                  nights={accommodation.nights}
+                  statusText={accommodation.statusText}
+                />
+              ))}
             </div>
 
             {/* Left Arrow Button - Visible if scrolled at least a little */}
@@ -374,7 +468,6 @@ const Home = () => {
         </div>
 
         {/* Activities Section */}
-
         <div className=" mt-8">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[18px] font-[700] text-gray-900 dark:text-white">
@@ -391,17 +484,19 @@ const Home = () => {
                 Day plan
               </div>
               <div className="dark:bg-[#333333] w-[85px] h-[30px] bg-white rounded-[8px] dark:text-[#D3F462] text-[#313DDF] text-[12px] font-[600] flex justify-center items-center border-[1px] border-[#313DDF] dark:border-[#D3F462] ">
-                14 Activities
+                {tripData?.activities.totalCount} Activities
               </div>
             </div>
             <div className="flex gap-3 overflow-x-auto custom-scrollbar">
-              <DaysUi firstDay={true} date="01" day="Sun" month="JAN" />
-              <DaysUi firstDay={false} date="02" day="Mon" />
-              <DaysUi firstDay={false} date="03" day="Tue" />
-              <DaysUi firstDay={false} date="04" day="Wed" />
-              <DaysUi firstDay={false} date="05" day="Thu" />
-              <DaysUi firstDay={false} date="06" day="Fri" />
-              <DaysUi firstDay={false} date="07" day="Sat" />
+              {tripData?.activities?.days?.map((day, index) => (
+                <DaysUi
+                  key={index} // Unique key for each day
+                  firstDay={day.isFirstDay}
+                  date={day.date}
+                  day={day.day}
+                  month={day.month}
+                />
+              ))}
             </div>
           </div>
 

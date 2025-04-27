@@ -16,23 +16,23 @@ import { IoIosAdd } from "react-icons/io";
 const BottomNavigation = () => {
   return (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4 py-2 bg-white dark:bg-[#1D1F24]  flex justify-between items-center z-[100]">
-      <div className="w-[48px] h-[48px]  dark:bg-[#D3F462]/20 bg-[#313DDF]/20 rounded-full flex items-center justify-center">
+      <div className="w-[48px] h-[48px]  dark:bg-[#D3F462]/20 bg-[#313DDF]/20 rounded-full flex items-center justify-center cursor-pointer">
         <FiHome className="text-[24px] dark:text-[#D3F462] text-[#313DDF] " />
       </div>
 
-      <div className="w-[48px] h-[48px]  flex items-center justify-center">
+      <div className="w-[48px] h-[48px]  flex items-center justify-center cursor-pointer">
         <IoSearch className="text-[24px] dark:text-[#676D75] " />
       </div>
 
-      <div className="w-[48px] h-[48px] flex items-center justify-center">
+      <div className="w-[48px] h-[48px] flex items-center justify-center cursor-pointer">
         <IoIosAdd className="text-[42px] dark:text-[#D3F462] text-[#313DDF]" />
       </div>
 
-      <div className="w-[48px] h-[48px] flex items-center justify-center">
+      <div className="w-[48px] h-[48px] flex items-center justify-center cursor-pointer">
         <FaRegHeart className="text-[24px] dark:text-[#676D75] " />
       </div>
 
-      <div className="w-[48px] h-[48px] flex items-center justify-center">
+      <div className="w-[48px] h-[48px] flex items-center justify-center cursor-pointer">
         <FiUser className="text-[24px] dark:text-[#676D75] " />
       </div>
     </div>

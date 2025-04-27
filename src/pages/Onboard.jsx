@@ -5,8 +5,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaUserFriends, FaUsers, FaHeart } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import { FaPerson } from "react-icons/fa6";
+import useNavigation from "../utils/navigation";
+import Routes from "../utils/routes";
 
 const Onboard = () => {
+
+  const navigate = useNavigation();
   // Form state
   const [formData, setFormData] = useState({
     destination: "",
@@ -58,13 +62,10 @@ const Onboard = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Form is valid
-      setToastMessage("Great! Planning your trip...");
-      setToastType("success");
-      setShowToast(true);
+
       console.log("Form submitted:", formData);
       // Navigate or proceed to next step
-      // Example: navigate("/next-step", { state: formData });
+      navigate("/home", false, formData);
     } else {
       // Form has errors
       setToastMessage("Please fill in all the required fields");
@@ -230,10 +231,10 @@ const Onboard = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-auto pt-6">
+          <div className="mt-auto pt-6 ">
             <button 
               type="submit"
-              className="w-full bg-[#3643FB] text-white font-medium py-3 rounded-lg hover:bg-blue-600 transition-colors"
+              className="w-full bg-[#3643FB] text-white font-medium py-3 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
             >
               Continue
             </button>
