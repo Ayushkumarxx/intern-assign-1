@@ -2,7 +2,7 @@ import React from "react";
 import { FaClock, FaUsers, FaList, FaArrowRight } from "react-icons/fa";
 import { GrBook } from "react-icons/gr";
 
-import { IoHome, IoSearch, IoAdd, IoHeart, IoPerson } from "react-icons/io5";
+import { IoHome, IoSearch, IoAdd, IoHeart, IoPerson, IoStar } from "react-icons/io5";
 import { GoArrowUpRight } from "react-icons/go";
 import { FaA } from "react-icons/fa6";
 import Exports from "../utils/export";
@@ -73,8 +73,9 @@ const AccommodationCard = () => {
             <div className="w-full h-[120px] relative ">
                 <img src="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg" alt=""  className="w-full h-full object-cover"/>
 
-                <div className="w-[75px] h-[16px] bg-[#3643FB] p-[2px] rounded-[2px] absolute bottom-1 left-1">
-
+                <div className="w-[75px] h-[16px] bg-[#3643FB] p-[2px] rounded-[2px] absolute bottom-1 left-1 flex items-center gap-1">
+                  <IoStar  className="text-white text-[10px]"/> <p className="text-white text-[8px]">
+                    Very good</p> 
                 </div>
             </div>
             
