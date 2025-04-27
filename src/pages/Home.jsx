@@ -5,9 +5,10 @@ import {
   FaList,
   FaArrowRight,
   FaArrowLeft,
+  FaRegHeart,
 } from "react-icons/fa";
 import { GrBook } from "react-icons/gr";
-
+import { FiHome, FiUser } from "react-icons/fi";
 import {
   IoHome,
   IoSearch,
@@ -20,39 +21,40 @@ import { HiOutlineCheckCircle } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
 import Exports from "../utils/export";
 import { div } from "framer-motion/client";
+import { IoIosAdd } from "react-icons/io";
 
 const BottomNavigation = () => {
   return (
-    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md px-6 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
-      <button className="flex flex-col items-center">
-        <div className="w-6 h-6 text-blue-500">
-          <IoHome size={24} />
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md px-6 py-2 bg-white dark:bg-[#1D1F24]  flex justify-between items-center">
+    
+        <div className="w-[48px] h-[48px]  dark:bg-[#D3F462]/20 bg-[#313DDF]/20 rounded-full flex items-center justify-center">
+          <FiHome className="text-[24px] dark:text-[#D3F462] text-[#313DDF] " />
         </div>
-      </button>
+  
 
-      <button className="flex flex-col items-center">
-        <div className="w-6 h-6 text-gray-500">
-          <IoSearch size={24} />
+   
+        <div className="w-[48px] h-[48px]  flex items-center justify-center">
+          <IoSearch className="text-[24px] dark:text-[#676D75] " />
         </div>
-      </button>
+  
 
-      <button className="flex flex-col items-center -mt-5">
-        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white">
-          <IoAdd size={24} />
-        </div>
-      </button>
 
-      <button className="flex flex-col items-center">
-        <div className="w-6 h-6 text-gray-500">
-          <IoHeart size={24} />
+        <div className="w-[48px] h-[48px] flex items-center justify-center">
+          <IoIosAdd className="text-[42px] dark:text-[#D3F462] text-[#313DDF]"/>
         </div>
-      </button>
 
-      <button className="flex flex-col items-center">
-        <div className="w-6 h-6 text-gray-500">
-          <IoPerson size={24} />
+
+
+        <div className="w-[48px] h-[48px] flex items-center justify-center">
+          <FaRegHeart className="text-[24px] dark:text-[#676D75] " />
         </div>
-      </button>
+
+
+
+        <div className="w-[48px] h-[48px] flex items-center justify-center">
+          <FiUser className="text-[24px] dark:text-[#676D75] " />
+        </div>
+    
     </div>
   );
 };
