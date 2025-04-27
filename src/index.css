@@ -6,3 +6,30 @@
 
   font-family: 'Montserrat', sans-serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base {
+  a {
+    color: #000;
+  }
+}
+@layer components {
+  .spon_img {
+    @apply w-[100px] mix-blend-multiply grayscale-100 max-md:w-[50px];
+  }
+} */
+@layer utilities {
+  .custom-scrollbar {
+    /* Hide scrollbar but still allow scrolling */
+    overflow: -moz-scrollbars-none; /* Firefox */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+  }
+}
+

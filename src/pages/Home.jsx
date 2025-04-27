@@ -1,5 +1,11 @@
-import React from "react";
-import { FaClock, FaUsers, FaList, FaArrowRight } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FaClock,
+  FaUsers,
+  FaList,
+  FaArrowRight,
+  FaArrowLeft,
+} from "react-icons/fa";
 import { GrBook } from "react-icons/gr";
 
 import {
@@ -124,9 +130,53 @@ const AccommodationCard = ({
   );
 };
 const Home = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false); // Track if we've scrolled at all
+  const containerRef = useRef(null);
+
+  // Function to scroll the container to the right
+  const scrollRight = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: 300, // Adjust this value for scroll speed
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Function to scroll the container to the left
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: -300, // Adjust this value for scroll speed
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Detect scroll position to toggle visibility of scroll buttons
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const scrollPosition = containerRef.current.scrollLeft;
+        setHasScrolled(scrollPosition > 0); // If scrolled by any amount, show left button
+      }
+    };
+
+    const container = containerRef.current;
+    container.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <section className="bg-[#FDFBF7] dark:bg-[#0B0809] min-h-screen w-full">
-      <div className="flex flex-col max-w-md mx-auto min-h-screen px-4 py-8 relative">
+      <div className="flex flex-col max-w-md mx-auto min-h-screen px-4 pt-8 pb-20 relative">
         {/* Header Section */}
         <div className="flex justify-between items-center  pt-2">
           <div>
@@ -242,41 +292,85 @@ const Home = () => {
             <h3 className="text-[18px] font-[700] text-gray-900 dark:text-white">
               Accomodation
             </h3>
-            <span className="text-[12px] font-[800] text-[#3643FB] dark:text-[#D1F462]">
+            <span className="text-[12px] font-[800] text-[#3643FB] dark:text-[#D1F462] underline underline-offset-2">
               See all
             </span>
           </div>
 
-          <div className="flex flex-nowrap gap-4 overflow-x-auto ">
-            <AccommodationCard
-              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-              ratingLabel="Very good"
-              hotelName="Shinagawa Prince Hotel"
-              checkIn="26.01.2025, 11:15 pm"
-              checkOut="28.01.2025, 10:00 am"
-              nights={2}
-              statusText="Confirmed"
-            />
-            <AccommodationCard
-              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-              ratingLabel="Very good"
-              hotelName="Shinagawa Prince Hotel"
-              checkIn="26.01.2025, 11:15 pm"
-              checkOut="28.01.2025, 10:00 am"
-              nights={2}
-              statusText="Confirmed"
-            />
-            <AccommodationCard
-              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
-              ratingLabel="Very good"
-              hotelName="Shinagawa Prince Hotel"
-              checkIn="26.01.2025, 11:15 pm"
-              checkOut="28.01.2025, 10:00 am"
-              nights={2}
-              statusText="Confirmed"
-            />
+          <div
+            className="relative"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div
+              ref={containerRef}
+              className="flex flex-nowrap gap-4 overflow-x-auto  scroll-smooth custom-scrollbar"
+            >
+              {/* Example accommodation cards */}
+              <AccommodationCard
+                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+                ratingLabel="Very good"
+                hotelName="Shinagawa Prince Hotel"
+                checkIn="26.01.2025, 11:15 pm"
+                checkOut="28.01.2025, 10:00 am"
+                nights={2}
+                statusText="Confirmed"
+              />
+              <AccommodationCard
+                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+                ratingLabel="Very good"
+                hotelName="Shinagawa Prince Hotel"
+                checkIn="26.01.2025, 11:15 pm"
+                checkOut="28.01.2025, 10:00 am"
+                nights={2}
+                statusText="Confirmed"
+              />
+              <AccommodationCard
+                imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+                ratingLabel="Very good"
+                hotelName="Shinagawa Prince Hotel"
+                checkIn="26.01.2025, 11:15 pm"
+                checkOut="28.01.2025, 10:00 am"
+                nights={2}
+                statusText="Confirmed"
+              />
+            </div>
+
+            {/* Left Arrow Button - Visible if scrolled at least a little */}
+            {isHovered && hasScrolled && (
+              <div
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[42px] h-[42px] bg-[#333333] rounded-full flex items-center justify-center z-10 cursor-pointer max-md:hidden"
+                onClick={scrollLeft}
+              >
+                <FaArrowLeft className="text-[16px] text-[#D3F462]" />
+              </div>
+            )}
+
+            {/* Right Arrow Button - Always visible when hovered */}
+            {isHovered && (
+              <div
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 w-[42px] h-[42px] bg-[#333333] rounded-full flex items-center justify-center z-10 cursor-pointer max-md:hidden"
+                onClick={scrollRight}
+              >
+                <FaArrowRight className="text-[16px] text-[#D3F462]" />
+              </div>
+            )}
           </div>
         </div>
+
+
+        {/* Activities Section */}
+
+        <div className=" mt-8">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[18px] font-[700] text-gray-900 dark:text-white">
+            Activities
+            </h3>
+            <span className="text-[12px] font-[800] text-[#3643FB] dark:text-[#D1F462] underline underline-offset-2">
+              See all
+            </span>
+          </div>
+          </div>
 
         {/* Bottom Navigation */}
         <BottomNavigation />
