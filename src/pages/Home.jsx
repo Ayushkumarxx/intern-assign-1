@@ -117,12 +117,12 @@ const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
 };
 const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
   return (
-    <div className="w-full h-[135px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
+    <div className="w-full h-[140px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
       <div className="w-[35%] h-full">
         <img src={image} alt={title} className="w-full h-full object-cover" />
       </div>
 
-      <div className="py-2 pr-4 flex flex-col justify-between w-[65%]">
+      <div className="py-2 pr-2 flex flex-col justify-between w-[65%]">
         <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
           {title}
         </div>
@@ -196,14 +196,14 @@ const Home = () => {
         <div className="flex justify-between items-center  pt-2">
           <div>
             <h2 className="text-[24px] font-[800] text-[#333333] dark:text-white">
-              Hello Chhavi!
+              Hello There!
             </h2>
             <p className="text-[16px] font-[500] text-[#333333] dark:text-white">
               Ready for the trip?
             </p>
           </div>
           <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-            C
+            U
           </div>
         </div>
 
@@ -220,15 +220,15 @@ const Home = () => {
           >
             <div className="flex justify-between z-50">
               <div>
-                <h1 className="text-[40px] font-[900] text-[#333333] dark:text-white mb-2 leading-none">
+                <h1 className="text-[40px] font-[900] text-white mb-2 leading-none">
                   TOKYO
                 </h1>
-                <p className="text-[12px] font-[500] text-[#333333] dark:text-white">
+                <p className="text-[12px] font-[500] text-white">
                   27.01.2025 - 02.02.2025
                 </p>
               </div>
               <div>
-                <GoArrowUpRight className="text-[#333333] dark:text-white text-[26px]" />
+                <GoArrowUpRight className="text-white text-[26px]" />
               </div>
             </div>
 
