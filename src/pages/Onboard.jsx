@@ -1,150 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GrLocation } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaUser, FaUserFriends, FaUsers, FaHeart } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Input Field Component
-const InputField = ({ icon, placeholder, value, onChange, id, name }) => {
-  return (
-    <div className="relative w-full">
-      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300">
-        {icon}
-      </div>
-      <input
-        type="text"
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="block w-full px-10 py-3 rounded-lg border border-gray-200 dark:border-gray-700 
-                  bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100 
-                  placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder={placeholder}
-      />
-    </div>
-  );
-};
-
-// Select Dropdown Component
-const SelectField = ({ icon, options, value, onChange, id, name }) => {
-  return (
-    <div className="relative w-full">
-      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300">
-        {icon}
-      </div>
-      <select
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="appearance-none block w-full px-10 py-3 rounded-lg border border-gray-200 
-                  dark:border-gray-700 bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100
-                  focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="" disabled>
-          Select Duration
-        </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <IoIosArrowDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 pointer-events-none" />
-    </div>
-  );
-};
-
-// Travel Type Option Component
-const TravelTypeOption = ({ id, label, icon, selected, onChange }) => {
-  return (
-    <div
-      className={`flex items-center gap-2 rounded-lg border cursor-pointer transition-all
-        ${
-          selected
-            ? "bg-[#3643FB] text-white border-blue-500"
-            : "border-gray-200 dark:border-gray-700 bg-white dark:bg-[#333333] hover:border-gray-400 dark:hover:border-gray-500"
-        }`}
-    >
-      <input
-        type="radio"
-        id={id}
-        name="travelType"
-        value={id}
-        onChange={onChange}
-        checked={selected}
-        className="hidden"
-      />
-      <label
-        htmlFor={id}
-        className="flex items-center gap-3 p-3 cursor-pointer w-full"
-      >
-        <div className={`text-xl ${selected ? "text-white" : "text-gray-600 dark:text-gray-300"}`}>
-          {icon}
-        </div>
-        <span className={`text-base font-medium ${selected ? "text-white" : "text-gray-800 dark:text-gray-100"}`}>
-          {label}
-        </span>
-      </label>
-    </div>
-  );
-};
-
-// Section Title Component
-const SectionTitle = ({ title, subtitle }) => {
-  return (
-    <div className="flex flex-col gap-1">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{title}</h1>
-      {subtitle && <p className="text-sm text-gray-600 dark:text-gray-300">{subtitle}</p>}
-    </div>
-  );
-};
-
-// Form Section Component
-const FormSection = ({ title, children }) => {
-  return (
-    <div className="flex flex-col gap-2.5 w-full">
-      <label className="text-lg font-bold text-gray-900 dark:text-gray-50">{title}</label>
-      {children}
-    </div>
-  );
-};
-
-// Main Onboarding Component
 const Onboard = () => {
   // Form state
-  const [formState, setFormState] = useState({
+  const [formData, setFormData] = useState({
     destination: "",
     duration: "",
-    travelType: "",
-    currentStep: 1,
-    totalSteps: 2
+    travelType: ""
   });
+
+  // Form validation errors
+  const [errors, setErrors] = useState({});
+  
+  // Toast visibility state
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState(""); // "success" or "error"
 
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle form submission
-  const handleContinue = (e) => {
-    e.preventDefault();
-    if (formState.currentStep < formState.totalSteps) {
-      setFormState((prev) => ({ ...prev, currentStep: prev.currentStep + 1 }));
-    } else {
-      // Submit the form data or navigate to another page
-      console.log("Form submitted:", formState);
-      // You can add navigation logic here
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when field is filled
+    if (value) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
     }
   };
 
-  // Duration options
-  const durationOptions = Array.from({ length: 14 }, (_, i) => ({
-    value: String(i + 1),
-    label: `${i + 1} ${i + 1 === 1 ? "day" : "days"}`
-  }));
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.destination.trim()) {
+      newErrors.destination = "Please enter a destination";
+    }
+    
+    if (!formData.duration) {
+      newErrors.duration = "Please select a duration";
+    }
+    
+    if (!formData.travelType) {
+      newErrors.travelType = "Please select who you're traveling with";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      // Form is valid
+      setToastMessage("Great! Planning your trip...");
+      setToastType("success");
+      setShowToast(true);
+      console.log("Form submitted:", formData);
+      // Navigate or proceed to next step
+      // Example: navigate("/next-step", { state: formData });
+    } else {
+      // Form has errors
+      setToastMessage("Please fill in all the required fields");
+      setToastType("error");
+      setShowToast(true);
+    }
+  };
+
+  // Custom toast component
+  const CustomToast = ({ message, type, onClose }) => {
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }, [onClose]);
+    
+    return (
+      <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-lg shadow-lg 
+        ${type === "success" ? "bg-green-500" : "bg-red-500"} text-white flex items-center justify-between min-w-[300px]`}>
+        <span>{message}</span>
+        <button 
+          onClick={onClose}
+          className="ml-4 text-white font-bold"
+        >
+          ×
+        </button>
+      </div>
+    );
+  };
 
   // Travel type options
   const travelTypeOptions = [
@@ -154,74 +105,131 @@ const Onboard = () => {
     { id: "friends", label: "Friends", icon: <FaUserFriends /> }
   ];
 
-  // Render the first step (travel preferences)
-  const renderStep1 = () => (
-    <div className="flex flex-col gap-8 w-full">
-      <SectionTitle 
-        title="Plan Your Journey, Your Way!" 
-        subtitle="Let's create your personalised travel experience" 
-      />
-
-      <FormSection title="Where would you like to go?">
-        <InputField
-          icon={<GrLocation />}
-          placeholder="Enter Destination"
-          value={formState.destination}
-          onChange={handleInputChange}
-          id="destination"
-          name="destination"
-        />
-      </FormSection>
-
-      <FormSection title="How long will you stay?">
-        <SelectField
-          icon={<FaRegCalendarAlt />}
-          options={durationOptions}
-          value={formState.duration}
-          onChange={handleInputChange}
-          id="duration"
-          name="duration"
-        />
-      </FormSection>
-
-      <FormSection title="Who are you traveling with?">
-        <div className="grid grid-cols-2 gap-4">
-          {travelTypeOptions.map((option) => (
-            <TravelTypeOption
-              key={option.id}
-              id={option.id}
-              label={option.label}
-              icon={option.icon}
-              selected={formState.travelType === option.id}
-              onChange={handleInputChange}
-            />
-          ))}
-        </div>
-      </FormSection>
-    </div>
-  );
-
-  // Render the second step (could be preferences, budget, etc.)
-  const renderStep2 = () => (
-    <div className="flex flex-col gap-8 w-full">
-      <SectionTitle 
-        title="Almost there!" 
-        subtitle="Let's customize your travel experience further" 
-      />
-      
-      {/* You can add more form sections here */}
-      <div className="text-center text-lg text-gray-800 dark:text-gray-200">
-        Step 2 content will go here
-      </div>
-    </div>
-  );
-
   return (
     <section className="bg-gray-50 dark:bg-[#0B0809] min-h-screen w-full">
+      {showToast && (
+        <CustomToast 
+          message={toastMessage} 
+          type={toastType} 
+          onClose={() => setShowToast(false)} 
+        />
+      )}
+      
       <main className="flex flex-col max-w-md mx-auto justify-between min-h-screen px-4 py-8">
-        <form onSubmit={handleContinue} className="flex flex-col gap-8 flex-grow">
-          {formState.currentStep === 1 ? renderStep1() : renderStep2()}
-          
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8 flex-grow">
+          {/* Header */}
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">
+              Plan Your Journey, Your Way!
+            </h1>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Let's create your personalised travel experience
+            </p>
+          </div>
+
+          {/* Destination Input */}
+          <div className="flex flex-col gap-2.5 w-full">
+            <label className="text-lg font-bold text-gray-900 dark:text-gray-50">
+              Where would you like to go?
+            </label>
+            <div className="relative w-full">
+              <GrLocation className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300" />
+              <input
+                type="text"
+                id="destination"
+                name="destination"
+                value={formData.destination}
+                onChange={handleInputChange}
+                className={`block w-full px-10 py-3 rounded-lg border 
+                  ${errors.destination ? "border-red-500" : "border-gray-200 dark:border-gray-700"} 
+                  bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100`}
+                placeholder="Enter Destination"
+              />
+            </div>
+            {errors.destination && (
+              <p className="text-red-500 text-sm mt-1">{errors.destination}</p>
+            )}
+          </div>
+
+          {/* Duration Dropdown */}
+          <div className="flex flex-col gap-2.5 w-full">
+            <label className="text-lg font-bold text-gray-900 dark:text-gray-50">
+              How long will you stay?
+            </label>
+            <div className="relative w-full">
+              <FaRegCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300" />
+              <select
+                id="duration"
+                name="duration"
+                value={formData.duration}
+                onChange={handleInputChange}
+                className={`appearance-none block w-full px-10 py-3 rounded-lg border 
+                  ${errors.duration ? "border-red-500" : "border-gray-200 dark:border-gray-700"} 
+                  bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100`}
+              >
+                <option value="" disabled>
+                  Select Duration
+                </option>
+                {Array.from({ length: 14 }, (_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1} {i + 1 === 1 ? "day" : "days"}
+                  </option>
+                ))}
+              </select>
+              <IoIosArrowDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 pointer-events-none" />
+            </div>
+            {errors.duration && (
+              <p className="text-red-500 text-sm mt-1">{errors.duration}</p>
+            )}
+          </div>
+
+          {/* Travel Type Options */}
+          <div className="flex flex-col gap-2.5 w-full">
+            <label className="text-lg font-bold text-gray-900 dark:text-gray-50">
+              Who are you traveling with?
+            </label>
+            <div className="grid grid-cols-2 gap-4">
+              {travelTypeOptions.map((option) => (
+                <div
+                  key={option.id}
+                  className={`flex items-center gap-2 rounded-lg border cursor-pointer transition-all
+                    ${
+                      formData.travelType === option.id
+                        ? "bg-[#3643FB] text-white border-blue-500"
+                        : errors.travelType 
+                          ? "border-red-500 bg-white dark:bg-[#333333]"
+                          : "border-gray-200 dark:border-gray-700 bg-white dark:bg-[#333333]"
+                    }`}
+                >
+                  <input
+                    type="radio"
+                    id={option.id}
+                    name="travelType"
+                    value={option.id}
+                    onChange={handleInputChange}
+                    checked={formData.travelType === option.id}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor={option.id}
+                    className="flex items-center gap-3 p-3 cursor-pointer w-full h-full"
+                  >
+                    <div className={formData.travelType === option.id ? "text-white" : "text-gray-600 dark:text-gray-300"}>
+                      {option.icon}
+                    </div>
+                    <span className={`font-medium ${formData.travelType === option.id ? "text-white" : "text-gray-800 dark:text-gray-100"}`}>
+                      {option.label}
+                    </span>
+                  </label>
+                </div>
+              ))}
+            </div>
+            {errors.travelType && (
+              <p className="text-red-500 text-sm mt-1">{errors.travelType}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
           <div className="mt-auto pt-6">
             <button 
               type="submit"
