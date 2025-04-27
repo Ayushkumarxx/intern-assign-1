@@ -133,19 +133,19 @@ const AccommodationCard = ({
 
 const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
   return firstDay ? (
-    <div className="flex border-[1px] dark:border-[#D3F462] border-[#313DDF] rounded-[8px] overflow-hidden">
+    <div className="flex border-[1px] dark:border-[#D3F462] border-[#313DDF] rounded-[8px] overflow-hidden shrink-0">
       <div className="w-[28px] h-[45px] dark:bg-[#D3F462] bg-[#313DDF] flex items-center justify-center">
         <span className="text-white dark:text-[#333333] transform -rotate-90 text-[12px] font-[600]">
           {month}
         </span>
       </div>
-      <div className="w-[46px] h-[45px] dark:bg-[#333333] bg-[#ffffff] text-[#333333]  dark:text-white flex flex-col items-center justify-between text-[12px] p-2 font-[500]">
+      <div className="w-[46px] h-[45px] dark:bg-[#333333] bg-[#ffffff] text-[#333333]  dark:text-white flex flex-col items-center justify-between text-[12px] p-2 font-[500] ">
         <p className="leading-none">{day}</p>
         <p className="leading-none"> {date}</p>
       </div>
     </div>
   ) : (
-    <div className="w-[46px] h-[45px] dark:bg-[#292929] bg-[#E5E5E5] text-[#808080] rounded-[8px] flex flex-col items-center justify-between text-[12px] p-2 font-[500]">
+    <div className="w-[46px] h-[45px] dark:bg-[#292929] bg-[#E5E5E5] text-[#808080] rounded-[8px] flex flex-col items-center justify-between text-[12px] p-2 font-[500] shrink-0">
       <p className="leading-none">{day}</p>
       <p className="leading-none"> {date}</p>
     </div>
