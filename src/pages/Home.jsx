@@ -154,7 +154,7 @@ const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
 const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
     return (
       <div className="w-full h-[135px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
-        <div className="w-[150px] h-full">
+        <div className="w-[35%] h-full">
           <img
             src={image}
             alt={title}
@@ -162,19 +162,19 @@ const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
           />
         </div>
   
-        <div className="py-2 pr-4 flex flex-col justify-between">
+        <div className="py-2 pr-4 flex flex-col justify-between w-[65%]">
           <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
             {title}
           </div>
           <div>
             <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Timing: {timing}</span>
+              <span className="font-[700]">Timing:</span> {timing}
             </div>
             <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Duration: {duration}</span>
+              <span className="font-[700]">Duration:</span> {duration}
             </div>
             <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Pick Up: {pickUp}</span>
+              <span className="font-[700]">Pick Up:</span> {pickUp}
             </div>
           </div>
         </div>
