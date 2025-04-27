@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { GrLocation } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaUser, FaUserFriends, FaUsers, FaHeart } from "react-icons/fa";
+import { FaUserFriends, FaUsers, FaHeart } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
+import { FaPerson } from "react-icons/fa6";
 
 const Onboard = () => {
   // Form state
@@ -98,7 +99,7 @@ const Onboard = () => {
 
   // Travel type options
   const travelTypeOptions = [
-    { id: "solo", label: "Solo", icon: <FaUser /> },
+    { id: "solo", label: "Solo", icon: <FaPerson /> },
     { id: "couple", label: "Couple", icon: <FaHeart /> },
     { id: "family", label: "Family", icon: <FaUsers /> },
     { id: "friends", label: "Friends", icon: <FaUserFriends /> }
@@ -118,7 +119,7 @@ const Onboard = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-8 flex-grow">
           {/* Header */}
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">
+            <h1 className="text-[24px] font-[800] text-gray-900 dark:text-gray-50">
               Plan Your Journey, Your Way!
             </h1>
             <p className="text-sm text-gray-600 dark:text-gray-300">

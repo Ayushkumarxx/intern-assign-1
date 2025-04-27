@@ -2,6 +2,8 @@ import Onboard from "../pages/Onboard";
 import Home from "../pages/Home";
 
 import plane from "../assets/images/plane.png";
+
+import BottomNavigation from "../components/Home/BottomNavigation";
 let Exports = {
     pages: {
         Onboard: Onboard,
@@ -9,6 +11,9 @@ let Exports = {
     },
     images: {
         plane: plane
+    },
+    components: {
+        BottomNavigation: BottomNavigation
     }
 };
 

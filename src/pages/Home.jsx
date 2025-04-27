@@ -10,54 +10,16 @@ import {
 import { GrBook } from "react-icons/gr";
 import { FiHome, FiUser } from "react-icons/fi";
 import {
-  IoHome,
   IoSearch,
-  IoAdd,
-  IoHeart,
-  IoPerson,
   IoStar,
 } from "react-icons/io5";
 import { HiOutlineCheckCircle } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
 import Exports from "../utils/export";
-import { div } from "framer-motion/client";
+
 import { IoIosAdd } from "react-icons/io";
 
-const BottomNavigation = () => {
-  return (
-    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md px-6 py-2 bg-white dark:bg-[#1D1F24]  flex justify-between items-center">
-    
-        <div className="w-[48px] h-[48px]  dark:bg-[#D3F462]/20 bg-[#313DDF]/20 rounded-full flex items-center justify-center">
-          <FiHome className="text-[24px] dark:text-[#D3F462] text-[#313DDF] " />
-        </div>
-  
 
-   
-        <div className="w-[48px] h-[48px]  flex items-center justify-center">
-          <IoSearch className="text-[24px] dark:text-[#676D75] " />
-        </div>
-  
-
-
-        <div className="w-[48px] h-[48px] flex items-center justify-center">
-          <IoIosAdd className="text-[42px] dark:text-[#D3F462] text-[#313DDF]"/>
-        </div>
-
-
-
-        <div className="w-[48px] h-[48px] flex items-center justify-center">
-          <FaRegHeart className="text-[24px] dark:text-[#676D75] " />
-        </div>
-
-
-
-        <div className="w-[48px] h-[48px] flex items-center justify-center">
-          <FiUser className="text-[24px] dark:text-[#676D75] " />
-        </div>
-    
-    </div>
-  );
-};
 
 const InfoItem = ({
   icon: Icon, // Icon component passed as prop
@@ -154,35 +116,34 @@ const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
   );
 };
 const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
-    return (
-      <div className="w-full h-[135px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
-        <div className="w-[35%] h-full">
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover"
-          />
+  return (
+    <div className="w-full h-[135px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
+      <div className="w-[35%] h-full">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+      </div>
+
+      <div className="py-2 pr-4 flex flex-col justify-between w-[65%]">
+        <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
+          {title}
         </div>
-  
-        <div className="py-2 pr-4 flex flex-col justify-between w-[65%]">
-          <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
-            {title}
+        <div>
+          <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+            <span className="font-[700]">Timing:</span> {timing}
           </div>
-          <div>
-            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Timing:</span> {timing}
-            </div>
-            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Duration:</span> {duration}
-            </div>
-            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
-              <span className="font-[700]">Pick Up:</span> {pickUp}
-            </div>
+          <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+            <span className="font-[700]">Duration:</span> {duration}
+          </div>
+          <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+            <span className="font-[700]">Pick Up:</span> {pickUp}
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
+
+
+
 const Home = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false); // Track if we've scrolled at all
@@ -455,26 +416,26 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col gap-6">
-          <ActivityCard
-        image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
-        title="Senso-ji Temple & Nakamise Shopping Street"
-        timing="8:00 AM"
-        duration="2 hours"
-        pickUp="From Hotel"
-      />
-      
-      <ActivityCard
-        image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
-        title="Tokyo Tower Visit"
-        timing="9:00 AM"
-        duration="3 hours"
-        pickUp="From Station"
-      />
+            <ActivityCard
+              image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
+              title="Senso-ji Temple & Nakamise Shopping Street"
+              timing="8:00 AM"
+              duration="2 hours"
+              pickUp="From Hotel"
+            />
+
+            <ActivityCard
+              image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
+              title="Tokyo Tower Visit"
+              timing="9:00 AM"
+              duration="3 hours"
+              pickUp="From Station"
+            />
           </div>
         </div>
 
         {/* Bottom Navigation */}
-        <BottomNavigation />
+        <Exports.components.BottomNavigation />
       </div>
     </section>
   );
