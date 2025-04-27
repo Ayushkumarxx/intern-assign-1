@@ -84,7 +84,7 @@ const AccommodationCard = ({
   statusText,
 }) => {
   return (
-    <div className="w-[200px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none mb-7 flex flex-col shrink-0">
+    <div className="w-[220px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none mb-7 flex flex-col shrink-0">
       <div className="w-full h-[120px] relative">
         <img
           src={imageUrl}
@@ -106,7 +106,7 @@ const AccommodationCard = ({
           <span className="font-[700]">Check in:</span> {checkIn}
         </div>
 
-        <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-4">
+        <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-2">
           <span className="font-[700]">Check out:</span> {checkOut}
         </div>
 
