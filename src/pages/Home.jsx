@@ -2,9 +2,16 @@ import React from "react";
 import { FaClock, FaUsers, FaList, FaArrowRight } from "react-icons/fa";
 import { GrBook } from "react-icons/gr";
 
-import { IoHome, IoSearch, IoAdd, IoHeart, IoPerson, IoStar } from "react-icons/io5";
+import {
+  IoHome,
+  IoSearch,
+  IoAdd,
+  IoHeart,
+  IoPerson,
+  IoStar,
+} from "react-icons/io5";
+import { HiOutlineCheckCircle } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
-import { FaA } from "react-icons/fa6";
 import Exports from "../utils/export";
 
 const BottomNavigation = () => {
@@ -67,20 +74,54 @@ const InfoItem = ({
   );
 };
 
-const AccommodationCard = () => {
-    return (
-        <div className="w-[200px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none mb-7">
-            <div className="w-full h-[120px] relative ">
-                <img src="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg" alt=""  className="w-full h-full object-cover"/>
-
-                <div className="w-[75px] h-[16px] bg-[#3643FB] p-[2px] rounded-[2px] absolute bottom-1 left-1 flex items-center gap-1">
-                  <IoStar  className="text-white text-[10px]"/> <p className="text-white text-[8px]">
-                    Very good</p> 
-                </div>
-            </div>
-            
+const AccommodationCard = ({
+  imageUrl,
+  ratingLabel,
+  hotelName,
+  checkIn,
+  checkOut,
+  nights,
+  statusText,
+}) => {
+  return (
+    <div className="w-[200px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none mb-7 flex flex-col shrink-0">
+      <div className="w-full h-[120px] relative">
+        <img
+          src={imageUrl}
+          alt="Hotel"
+          className="w-full h-full object-cover"
+        />
+        <div className="w-[80px] h-[20px] bg-[#3643FB] p-[4px] rounded-[4px] absolute bottom-1 left-2 flex items-center gap-1">
+          <IoStar className="text-white text-[14px]" />
+          <p className="text-white text-[10px]">{ratingLabel}</p>
         </div>
-    )
+      </div>
+
+      <div className="p-2 flex flex-col h-full">
+        <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
+          {hotelName}
+        </div>
+
+        <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+          <span className="font-[700]">Check in:</span> {checkIn}
+        </div>
+
+        <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-4">
+          <span className="font-[700]">Check out:</span> {checkOut}
+        </div>
+
+        <div className="flex items-center justify-between mt-auto">
+          <div className="text-[12px] font-[700] text-[#333333] dark:text-white">
+            {nights} Nights
+          </div>
+          <div className="flex items-center text-[12px] font-[700] gap-1.5 text-[#90EB61]">
+            <HiOutlineCheckCircle className="text-[18px]" />
+            {statusText}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 const Home = () => {
   return (
@@ -154,8 +195,11 @@ const Home = () => {
 
         {/* Flight Details Section */}
         <div className="p-2 mt-8 bg-[#3643FB] w-full h-[130px] rounded-2xl overflow-hidden relative">
-
-            <img src={Exports.images.plane} alt=""  className="absolute bottom-[-180px] right-[-160px] -rotate-12 scale-x-[-1]"/>
+          <img
+            src={Exports.images.plane}
+            alt=""
+            className="absolute bottom-[-180px] right-[-160px] -rotate-12 scale-x-[-1]"
+          />
           <div className="bg-[#313DDF] w-full h-full rounded-2xl flex flex-col justify-between p-[10px]">
             <div className="flex justify-between items-start">
               <div>
@@ -203,8 +247,34 @@ const Home = () => {
             </span>
           </div>
 
-          <div className="flex space-x-3 overflow-x-auto pb-2">
-            <AccommodationCard/>
+          <div className="flex flex-nowrap gap-4 overflow-x-auto ">
+            <AccommodationCard
+              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+              ratingLabel="Very good"
+              hotelName="Shinagawa Prince Hotel"
+              checkIn="26.01.2025, 11:15 pm"
+              checkOut="28.01.2025, 10:00 am"
+              nights={2}
+              statusText="Confirmed"
+            />
+            <AccommodationCard
+              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+              ratingLabel="Very good"
+              hotelName="Shinagawa Prince Hotel"
+              checkIn="26.01.2025, 11:15 pm"
+              checkOut="28.01.2025, 10:00 am"
+              nights={2}
+              statusText="Confirmed"
+            />
+            <AccommodationCard
+              imageUrl="https://secure.s.forbestravelguide.com/img/properties/Property-AndazTokyoToranomonHills-Hotel-GuestroomSuite-DeluxeAndazLargeKing-HyattCorporation.jpg"
+              ratingLabel="Very good"
+              hotelName="Shinagawa Prince Hotel"
+              checkIn="26.01.2025, 11:15 pm"
+              checkOut="28.01.2025, 10:00 am"
+              nights={2}
+              statusText="Confirmed"
+            />
           </div>
         </div>
 
