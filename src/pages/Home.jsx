@@ -19,6 +19,7 @@ import {
 import { HiOutlineCheckCircle } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
 import Exports from "../utils/export";
+import { div } from "framer-motion/client";
 
 const BottomNavigation = () => {
   return (
@@ -90,7 +91,7 @@ const AccommodationCard = ({
   statusText,
 }) => {
   return (
-    <div className="w-[220px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none mb-7 flex flex-col shrink-0">
+    <div className="w-[220px] h-[240px] rounded-2xl overflow-hidden dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none  flex flex-col shrink-0">
       <div className="w-full h-[120px] relative">
         <img
           src={imageUrl}
@@ -129,6 +130,57 @@ const AccommodationCard = ({
     </div>
   );
 };
+
+const DaysUi = ({ firstDay = false, date, day, month = "" }) => {
+  return firstDay ? (
+    <div className="flex border-[1px] dark:border-[#D3F462] border-[#313DDF] rounded-[8px] overflow-hidden">
+      <div className="w-[28px] h-[45px] dark:bg-[#D3F462] bg-[#313DDF] flex items-center justify-center">
+        <span className="text-white dark:text-[#333333] transform -rotate-90 text-[12px] font-[600]">
+          {month}
+        </span>
+      </div>
+      <div className="w-[46px] h-[45px] dark:bg-[#333333] bg-[#ffffff] text-[#333333]  dark:text-white flex flex-col items-center justify-between text-[12px] p-2 font-[500]">
+        <p className="leading-none">{day}</p>
+        <p className="leading-none"> {date}</p>
+      </div>
+    </div>
+  ) : (
+    <div className="w-[46px] h-[45px] dark:bg-[#292929] bg-[#E5E5E5] text-[#808080] rounded-[8px] flex flex-col items-center justify-between text-[12px] p-2 font-[500]">
+      <p className="leading-none">{day}</p>
+      <p className="leading-none"> {date}</p>
+    </div>
+  );
+};
+const ActivityCard = ({ image, title, timing, duration, pickUp }) => {
+    return (
+      <div className="w-full h-[135px] rounded-[8px] flex gap-2 dark:bg-[#4D4D4D] border-[1px] border-[#BFBFBF] dark:border-none overflow-hidden">
+        <div className="w-[150px] h-full">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+  
+        <div className="py-2 pr-4 flex flex-col justify-between">
+          <div className="text-[14px] font-[700] text-[#333333] dark:text-white mb-1">
+            {title}
+          </div>
+          <div>
+            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+              <span className="font-[700]">Timing: {timing}</span>
+            </div>
+            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+              <span className="font-[700]">Duration: {duration}</span>
+            </div>
+            <div className="text-[12px] font-[400] text-[#333333] dark:text-white mb-1">
+              <span className="font-[700]">Pick Up: {pickUp}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 const Home = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false); // Track if we've scrolled at all
@@ -248,7 +300,7 @@ const Home = () => {
           <img
             src={Exports.images.plane}
             alt=""
-            className="absolute bottom-[-180px] right-[-160px] -rotate-12 scale-x-[-1]"
+            className="absolute bottom-[-180px] right-[-160px] -rotate-12 scale-x-[-1] max-sm:bottom-[-140px]"
           />
           <div className="bg-[#313DDF] w-full h-full rounded-2xl flex flex-col justify-between p-[10px]">
             <div className="flex justify-between items-start">
@@ -358,19 +410,66 @@ const Home = () => {
           </div>
         </div>
 
-
         {/* Activities Section */}
 
         <div className=" mt-8">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[18px] font-[700] text-gray-900 dark:text-white">
-            Activities
+              Activities
             </h3>
             <span className="text-[12px] font-[800] text-[#3643FB] dark:text-[#D1F462] underline underline-offset-2">
               See all
             </span>
           </div>
+
+          <div className="w-full h-[120px] rounded-2xl  dark:bg-[#333333] border-[1px] border-[#BFBFBF] dark:border-none flex flex-col justify-between p-4">
+            <div className="flex gap-2.5">
+              <div className="dark:bg-[#D3F462] w-[85px] h-[30px] bg-[#313DDF] rounded-[8px] dark:text-[#333333] text-white text-[12px] font-[600] flex justify-center items-center ">
+                Day plan
+              </div>
+              <div className="dark:bg-[#333333] w-[85px] h-[30px] bg-white rounded-[8px] dark:text-[#D3F462] text-[#313DDF] text-[12px] font-[600] flex justify-center items-center border-[1px] border-[#313DDF] dark:border-[#D3F462] ">
+                14 Activities
+              </div>
+            </div>
+            <div className="flex gap-3 overflow-x-auto custom-scrollbar">
+              <DaysUi firstDay={true} date="01" day="Sun" month="JAN" />
+              <DaysUi firstDay={false} date="02" day="Mon" />
+              <DaysUi firstDay={false} date="03" day="Tue" />
+              <DaysUi firstDay={false} date="04" day="Wed" />
+              <DaysUi firstDay={false} date="05" day="Thu" />
+              <DaysUi firstDay={false} date="06" day="Fri" />
+              <DaysUi firstDay={false} date="07" day="Sat" />
+            </div>
           </div>
+
+          <div className="my-4 flex gap-6 items-center">
+            <div className="flex gap-2 p-1 bg-[#313DDF] dark:bg-[#D3F462] rounded-[8px] text-white dark:text-black text-[12px] font-[600]">
+              <div>Day 1</div>
+              <div>01.01.2025</div>
+            </div>
+            <div className=" text-[#313DDF] dark:text-[#D3F462] rounded-[8px]  text-[12px] font-[600]">
+              3 Activities
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6">
+          <ActivityCard
+        image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
+        title="Senso-ji Temple & Nakamise Shopping Street"
+        timing="8:00 AM"
+        duration="2 hours"
+        pickUp="From Hotel"
+      />
+      
+      <ActivityCard
+        image="https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg"
+        title="Tokyo Tower Visit"
+        timing="9:00 AM"
+        duration="3 hours"
+        pickUp="From Station"
+      />
+          </div>
+        </div>
 
         {/* Bottom Navigation */}
         <BottomNavigation />
