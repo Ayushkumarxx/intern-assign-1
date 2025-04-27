@@ -3,7 +3,6 @@ import { GrLocation } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaUser, FaUserFriends, FaUsers, FaHeart } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Onboard = () => {
