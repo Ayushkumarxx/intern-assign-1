@@ -9,6 +9,7 @@ const App  = () => {
 
       <Routes>
         <Route path="/" element={<Exports.pages.Onboard />} />
+        <Route path="/home" element={<Exports.pages.Home />} />
       </Routes>
     </Router>
   );

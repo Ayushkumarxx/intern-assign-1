@@ -105,7 +105,7 @@ const Onboard = () => {
   ];
 
   return (
-    <section className="bg-gray-50 dark:bg-[#0B0809] min-h-screen w-full">
+    <section className="bg-[#FDFBF7] dark:bg-[#0B0809] min-h-screen w-full">
       {showToast && (
         <CustomToast 
           message={toastMessage} 
@@ -141,7 +141,7 @@ const Onboard = () => {
                 onChange={handleInputChange}
                 className={`block w-full px-10 py-3 rounded-lg border 
                   ${errors.destination ? "border-red-500" : "border-gray-200 dark:border-gray-700"} 
-                  bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100`}
+                  bg-white dark:bg-[#333333] text-gray-800 dark:text-gray-100 dark:placeholder-[#f5f5f5]` }
                 placeholder="Enter Destination"
               />
             </div>
